@@ -1,0 +1,10 @@
+ipython
+pandas
+numpy
+pyspark==3.5.1
+jupyterlab
+pyarrow
+sentence-transformers
+huggingface
+huggingface_hub
+matplotlib
