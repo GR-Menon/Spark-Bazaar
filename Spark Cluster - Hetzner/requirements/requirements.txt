@@ -1,0 +1,9 @@
+ipython 
+pandas
+pyarrow
+warcio
+numpy==1.26.4
+sentence-transformers
+huggingface-hub
+kaggle
+transformers

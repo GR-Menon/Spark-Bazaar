@@ -1,17 +1,23 @@
-# version: '3.8'
 volumes:
   shared-workspace:
-    name: 'Distributed-FS'
+    name: "Distributed-FS"
     driver: local
 
-
 services:
+  jupyterlab:
+    container_name: jupyterlab
+    image: jupyterlab
+    volumes:
+      - shared-workspace:/opt/workspace
+    ports:
+      - 8888:8888
+
   spark-master:
-    hostname: spark-master
     image: spark-cluster
-    entrypoint: ['/opt/spark/entrypoint.sh', 'master']
+    container_name: spark-master
+    entrypoint: ["/opt/spark/entrypoint.sh", "master"]
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 5s
       timeout: 3s
       retries: 3
@@ -20,49 +26,29 @@ services:
     env_file:
       - .env.spark
     ports:
-      - "8080:8080"
-      - "7077:7077"
-      - "2200:22"
-    expose:
-      - "22"
-
+      - 8080:8080
+      - 7077:7077
 
   spark-history-server:
-    hostname: spark-history
     image: spark-cluster
-    entrypoint: ['/opt/spark/entrypoint.sh', 'history']
+    container_name: spark-history
+    entrypoint: ["/opt/spark/entrypoint.sh", "history"]
     depends_on:
       - spark-master
-    env_file:
-      - .env.spark
     volumes:
       - shared-workspace:/opt/workspace
       - shared-workspace:/opt/spark/spark-events
+    env_file:
+      - .env.spark
     ports:
-      - "18080:18080"
-
+      - 18080:18080
 
   spark-worker:
     image: spark-cluster
-    hostname: spark-worker
-    entrypoint: ['/opt/spark/entrypoint.sh', 'worker']
+    entrypoint: ["/opt/spark/entrypoint.sh", "worker"]
     depends_on:
       - spark-master
+    volumes:
+      - shared-workspace:/opt/workspace
     env_file:
       - .env.spark
-    environment:
-      - SPARK_WORKER_CORES=3
-      - SPARK_WORKER_MEMORY=1024m
-      - SPARK_EXECUTOR_MEMORY=1024m
-    volumes:
-      - shared-workspace:/opt/workspace
-
-
-  jupyterlab:
-    image: jupyterlab
-    hostname: jupyterlab
-    container_name: jupyterlab
-    ports:
-      - 8888:8888
-    volumes:
-      - shared-workspace:/opt/workspace

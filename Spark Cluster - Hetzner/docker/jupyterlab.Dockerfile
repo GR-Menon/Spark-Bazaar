@@ -1,14 +1,18 @@
+FROM python:3.11-bullseye AS python-slim
+
+COPY requirements/requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 FROM hetzner-base
 
-# -- Layer: JupyterLab
-COPY requirements/jlab-reqs.txt requirements.txt
+COPY --from=python-slim /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=python-slim /usr/local/bin /usr/local/bin
 
-RUN apt-get update -y && \
-    apt-get install -y python3-pip wget && \
-    pip3 install -r requirements.txt
+# ARG jupyterlab_version=4.2.0
+ARG pyspark_version=3.5.1
 
-# -- Runtime
+RUN pip3 install --no-cache-dir wget pyspark==${pyspark_version} jupyterlab
 
-EXPOSE 8888
 WORKDIR ${SHARED_WORKSPACE}
+
 CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=

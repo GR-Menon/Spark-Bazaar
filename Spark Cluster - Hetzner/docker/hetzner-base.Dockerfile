@@ -1,5 +1,4 @@
-FROM eclipse-temurin:17-jre-focal AS hetzner-base
-
+FROM python:3.11-bullseye AS hetzner-base
 
 ARG shared_workspace=/opt/workspace
 
@@ -7,16 +6,15 @@ ARG shared_workspace=/opt/workspace
 RUN mkdir -p ${shared_workspace} && \
     apt-get update -y --fix-missing && \
     apt-get install -y --no-install-recommends \
-        sudo \
-        curl \
-        vim \
-        unzip \
-        rsync \
-        build-essential \
-        software-properties-common \
-        ssh && \
-    apt-get install -y python3 && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
+    sudo \
+    curl \
+    vim \
+    unzip \
+    rsync \ 
+    openjdk-11-jdk \
+    build-essential \
+    software-properties-common \
+    ssh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
