@@ -1,16 +1,24 @@
 volumes:
   shared-workspace:
     name: "Distributed-FS"
-    driver: local
+  spark-logs:
+    name: "Spark-Logs"
 
 services:
+  llama8b:
+    container_name: llama8b
+    image: llama8b
+    ports:
+      - "9090":"9090"
+    
   jupyterlab:
     container_name: jupyterlab
     image: jupyterlab
     volumes:
       - shared-workspace:/opt/workspace
+      - spark-logs:/opt/spark/spark-events
     ports:
-      - 8888:8888
+      - "8888":"8888"
 
   spark-master:
     image: spark-cluster
@@ -23,11 +31,12 @@ services:
       retries: 3
     volumes:
       - shared-workspace:/opt/workspace
+      - spark-logs:/opt/spark/spark-events
     env_file:
       - .env.spark
     ports:
-      - 8080:8080
-      - 7077:7077
+      - "8080":"8080"
+      - "7077":"7077"
 
   spark-history-server:
     image: spark-cluster
@@ -41,7 +50,7 @@ services:
     env_file:
       - .env.spark
     ports:
-      - 18080:18080
+      - "18080":"18080"
 
   spark-worker:
     image: spark-cluster
@@ -50,5 +59,11 @@ services:
       - spark-master
     volumes:
       - shared-workspace:/opt/workspace
+      - spark-logs:/opt/spark/spark-events
     env_file:
       - .env.spark
+    environment:
+      - SPARK_WORKER_CORES=3
+      - SPARK_WORKER_MEMORY=12g
+      - SPARK_EXECUTOR_MEMORY=4g
+      - SPARK_EXECUTOR_CORES=1
