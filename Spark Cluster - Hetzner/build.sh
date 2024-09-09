@@ -11,3 +11,7 @@ docker build \
 docker build \
   -f docker/jupyterlab.Dockerfile \
   -t jupyterlab .
+
+docker build \
+  -f docker/llama8b.Dockerfile \
+  -t llama8b .

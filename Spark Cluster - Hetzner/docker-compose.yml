@@ -9,7 +9,7 @@ services:
     container_name: llama8b
     image: llama8b
     ports:
-      - "9090":"9090"
+      - "9090:9090"
     
   jupyterlab:
     container_name: jupyterlab
@@ -18,7 +18,7 @@ services:
       - shared-workspace:/opt/workspace
       - spark-logs:/opt/spark/spark-events
     ports:
-      - "8888":"8888"
+      - "8888:8888"
 
   spark-master:
     image: spark-cluster
@@ -35,8 +35,8 @@ services:
     env_file:
       - .env.spark
     ports:
-      - "8080":"8080"
-      - "7077":"7077"
+      - "8080:8080"
+      - "7077:7077"
 
   spark-history-server:
     image: spark-cluster
@@ -50,7 +50,7 @@ services:
     env_file:
       - .env.spark
     ports:
-      - "18080":"18080"
+      - "18080:18080"
 
   spark-worker:
     image: spark-cluster
