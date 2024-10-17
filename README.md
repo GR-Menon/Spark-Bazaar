@@ -1,11 +1,10 @@
 # Spark Bazaar
 A collection of Apache Spark cluster setups using Docker.
 
-![Spark Bazaar](assets/spark-bazaar.png)
+![Spark Bazaar](assets/spark-bazaar.png)    
+</br>   
 
----
-
-# Introduction
+# Context
 
 This is a pre-cursor to the BigBanyanTree project, an initiative to empower engineering colleges to set up their data engineering clusters and drive interest in data processing and analysis using tools such as Apache Spark.
 
@@ -13,13 +12,17 @@ This work was done in collaboration with [Suchit G](https://www.linkedin.com/in/
 
 The data extracted using the `Spark Cluster - Hetzner` has been open-sourced on [HuggingFace](https://huggingface.co/big-banyan-tree).
 
---- 
+</br>  
 
 # Basic Cluster
 
-This is a basic [Apache Spark](https://spark.apache.org/) cluster recreated from this blog:
+This is a basic [Apache Spark](https://spark.apache.org/) cluster recreated from this blog:     
+
+</br>   
 
 > [Spark Standalone Cluster on Docker](https://medium.com/@MarinAgli1/setting-up-a-spark-standalone-cluster-on-docker-in-layman-terms-8cbdc9fdd14b)
+
+</br>    
 
 The cluster comprises a single `Docker` image running Apache Spark, and its different services orchestrated using 
 `Docker Compose`. It uses an entrypoint shell script, to start up different services based on the Spark Workload, like `spark-master`, `spark-worker` and `spark-history-server`.
@@ -32,13 +35,17 @@ make run-scaled
 ```
 This will spin up a standalone Spark cluster with 2 worker nodes.
 
----
+</br>
 
 # Jupyterlab Cluster
 
 This is an Apache Spark cluster in standalone mode, accompanied by a user-friendly Jupyterlab interface to run Spark jobs. This cluster setup is based on this blog:
 
+</br>
+
 > [Apache Spark Cluster with Jupyterlab Interface](https://towardsdatascience.com/apache-spark-cluster-on-docker-ft-a-juyterlab-interface-418383c95445)
+
+</br>
 
 This setup takes a slightly different approach from the one before. Here, we make use of separate Docker images for each of the cluster services such as `spark-master`, `spark-worker`, `jupyterlab` and so on. As before, all these separate Docker images are orchestrated using Docker Compose.
 
@@ -54,7 +61,7 @@ chmod +x .run.sh
 
 This will spin up a standalone Spark cluster with 2 worker nodes and a Jupyterlab interface.
 
----
+</br>
 
 # Hetzner Cluster
 
